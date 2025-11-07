@@ -373,4 +373,5 @@ npm run dev
 
 **Built for:** Pacific Australia Labour Mobility (PALM) Scheme
 **Serving:** 30,000+ Pacific workers
-**Last Updated:** 2025-10-31
+**Last Updated:** 2025-11-07
+**Features:** 3D Globe Visualization, Real-time Analytics, Distress Monitoring
