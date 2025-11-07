@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Users, TrendingUp, AlertTriangle, MessageSquare, Globe, MapPin } from 'lucide-react'
+import Link from 'next/link'
 import type { DashboardSummary, WorkersByCountry, EmployerRating, DistressAlert } from '@/lib/supabase'
 import WorkerDetailModal from '@/components/WorkerDetailModal'
 import Avatar from '@/components/Avatar'
@@ -71,9 +72,18 @@ export default function Dashboard() {
               <h1 className="text-2xl font-bold text-gray-900">PALM Worker Dashboard</h1>
               <p className="text-sm text-gray-500 mt-1">Real-time analytics for 30,000+ Pacific workers</p>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              Live
+            <div className="flex items-center gap-4">
+              <Link
+                href="/globe"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              >
+                <Globe className="w-4 h-4" />
+                View Globe
+              </Link>
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                Live
+              </div>
             </div>
           </div>
         </div>

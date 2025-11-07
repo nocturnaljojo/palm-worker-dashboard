@@ -1,0 +1,15 @@
+# Push Dashboard to GitHub
+
+## After creating the repository on GitHub (https://github.com/new):
+
+cd "C:\Users\jtdra\OneDrive\Desktop\AI Engineering AWS\AI Agents\palm-whatsapp-lambda\palm-whatsapp-lambda\dashboard"
+
+# Replace YOUR_GITHUB_USERNAME with your actual GitHub username
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/palm-worker-dashboard.git
+
+git branch -M main
+
+git push -u origin main
+
+## Or if you know your GitHub username already:
+# Example: git remote add origin https://github.com/jovilisi/palm-worker-dashboard.git
