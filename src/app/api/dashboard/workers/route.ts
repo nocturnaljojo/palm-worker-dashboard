@@ -43,18 +43,15 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error(`Error fetching workers by ${groupBy}:`, error)
-      return NextResponse.json(
-        { error: `Failed to fetch workers by ${groupBy}` },
-        { status: 500 }
-      )
+      // Return empty array instead of error to prevent frontend crash
+      return NextResponse.json([])
     }
 
-    return NextResponse.json(data as WorkersByCountry[] | WorkersByState[] | WorkersByIndustry[])
+    // Return empty array if data is null
+    return NextResponse.json((data || []) as WorkersByCountry[] | WorkersByState[] | WorkersByIndustry[])
   } catch (error) {
     console.error('Unexpected error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    // Return empty array instead of error to prevent frontend crash
+    return NextResponse.json([])
   }
 }

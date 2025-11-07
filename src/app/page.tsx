@@ -1,13 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Users, TrendingUp, AlertTriangle, MessageSquare, Globe, MapPin } from 'lucide-react'
-import Link from 'next/link'
-import type { DashboardSummary, WorkersByCountry, EmployerRating, DistressAlert } from '@/lib/supabase'
-import WorkerDetailModal from '@/components/WorkerDetailModal'
-import Avatar from '@/components/Avatar'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
-export default function Dashboard() {
+export default function HomePage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    // Redirect to globe page
+    router.push('/globe')
+  }, [router])
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Redirecting to globe...</p>
+      </div>
+    </div>
+  )
+}
+
+function DashboardOld() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null)
   const [workersByCountry, setWorkersByCountry] = useState<WorkersByCountry[]>([])
   const [topEmployers, setTopEmployers] = useState<EmployerRating[]>([])
