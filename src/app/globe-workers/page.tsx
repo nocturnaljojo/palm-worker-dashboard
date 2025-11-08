@@ -115,11 +115,21 @@ export default function GlobeWorkersPage() {
   async function fetchWorkerData() {
     try {
       const response = await fetch('/api/dashboard/workers-map')
-      const data: Worker[] = await response.json()
+      const data = await response.json()
 
       console.log('Received worker data:', data)
-      console.log('Number of workers:', data?.length || 0)
+      console.log('Data type:', typeof data, 'Is array:', Array.isArray(data))
 
+      // Handle case where API returns an error object instead of array
+      if (!Array.isArray(data)) {
+        console.error('API did not return an array:', data)
+        setWorkers([])
+        setGlobePoints([])
+        setLoading(false)
+        return
+      }
+
+      console.log('Number of workers:', data.length)
       setWorkers(data)
 
       // Convert to globe points with postcode coordinates

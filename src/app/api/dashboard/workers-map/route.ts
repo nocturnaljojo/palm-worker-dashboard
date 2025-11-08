@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Error fetching workers for map:', error)
-      return NextResponse.json({ error: error.message, workers: [] })
+      return NextResponse.json([])
     }
 
     console.log(`Fetched ${data?.length || 0} registered users from database`)
@@ -71,6 +71,6 @@ export async function GET(request: Request) {
     return NextResponse.json(workers)
   } catch (error) {
     console.error('Unexpected error fetching workers map data:', error)
-    return NextResponse.json({ error: String(error), workers: [] })
+    return NextResponse.json([])
   }
 }
