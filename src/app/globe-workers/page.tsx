@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import Map, { Marker, MapRef } from 'react-map-gl/mapbox'
+import Map, { Marker, MapRef, ScaleControl, NavigationControl } from 'react-map-gl/mapbox'
 import { Users, Sparkles, User, Map as MapIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { postcodeToCoordinates, addJitter } from '@/lib/postcodeToCoordinates'
@@ -53,6 +53,31 @@ export default function GlobeWorkersPage() {
     const phone = localStorage.getItem('whatsapp_user_phone')
     setUserPhone(phone)
   }, [])
+
+  // Auto-focus on densest cluster after points are loaded
+  useEffect(() => {
+    if (globePoints.length > 0 && mapRef.current) {
+      const center = findDensestCluster(globePoints)
+      mapRef.current.flyTo({
+        center: [center.lng, center.lat],
+        zoom: 5, // Roughly 300km view radius for globe
+        duration: 3000
+      })
+    }
+  }, [globePoints])
+
+  // Find the center of the densest cluster of workers
+  function findDensestCluster(points: GlobePoint[]): { lat: number; lng: number } {
+    if (points.length === 0) return { lat: -25, lng: 133 }
+
+    // Calculate average position (centroid) of all points
+    const centroid = {
+      lat: points.reduce((sum, p) => sum + p.lat, 0) / points.length,
+      lng: points.reduce((sum, p) => sum + p.lng, 0) / points.length
+    }
+
+    return centroid
+  }
 
   // Auto-rotate globe effect
   useEffect(() => {
@@ -362,6 +387,27 @@ export default function GlobeWorkersPage() {
                 </div>
               </Marker>
             ))}
+
+            {/* Scale Control - shows distance */}
+            <ScaleControl
+              maxWidth={150}
+              unit="metric"
+              position="bottom-right"
+              style={{
+                marginBottom: '10px',
+                marginRight: '10px'
+              }}
+            />
+
+            {/* Navigation Control - zoom buttons */}
+            <NavigationControl
+              position="top-left"
+              showCompass={false}
+              style={{
+                marginTop: '10px',
+                marginLeft: '10px'
+              }}
+            />
           </Map>
 
           {/* Legend */}
