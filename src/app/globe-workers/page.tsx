@@ -116,13 +116,24 @@ export default function GlobeWorkersPage() {
     try {
       const response = await fetch('/api/dashboard/workers-map')
       const data: Worker[] = await response.json()
+
+      console.log('Received worker data:', data)
+      console.log('Number of workers:', data?.length || 0)
+
       setWorkers(data)
 
       // Convert to globe points with postcode coordinates
       const points: GlobePoint[] = data
         .map((worker, index) => {
+          console.log(`Processing worker ${worker.name}: postcode=${worker.postcode}, state=${worker.state}`)
+
           const coords = postcodeToCoordinates(worker.postcode)
-          if (!coords) return null
+          if (!coords) {
+            console.log(`No coordinates found for postcode: ${worker.postcode}`)
+            return null
+          }
+
+          console.log(`Got coordinates for ${worker.name}:`, coords)
 
           // Add small jitter to prevent exact overlaps
           const jitteredCoords = addJitter(coords, index)
@@ -143,6 +154,7 @@ export default function GlobeWorkersPage() {
         })
         .filter(Boolean) as GlobePoint[]
 
+      console.log(`Created ${points.length} globe points`)
       setGlobePoints(points)
       setLoading(false)
     } catch (error) {

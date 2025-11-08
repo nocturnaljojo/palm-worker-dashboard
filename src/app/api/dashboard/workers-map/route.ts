@@ -19,20 +19,27 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Error fetching workers for map:', error)
-      return NextResponse.json([])
+      return NextResponse.json({ error: error.message, workers: [] })
+    }
+
+    console.log(`Fetched ${data?.length || 0} registered users from database`)
+
+    // Log first user to see structure
+    if (data && data.length > 0) {
+      console.log('Sample user data:', JSON.stringify(data[0], null, 2))
     }
 
     // Transform data to expected format, checking both direct columns and survey_data JSONB
     const workers = (data || [])
       .map(user => {
         // Try to get data from direct columns first, fallback to survey_data JSONB
-        const postcode = user.postcode || user.survey_data?.postcode || null
-        const state = user.state || user.survey_data?.state || null
-        const industry = user.industry || user.survey_data?.industry || null
-        const employer = user.employer || user.survey_data?.employer || null
-        const visa_type = user.visa_type || user.survey_data?.visa_type || null
+        const postcode = user.postcode || user.survey_data?.postcode || user.survey_responses?.postcode || null
+        const state = user.state || user.survey_data?.state || user.survey_responses?.state || null
+        const industry = user.industry || user.survey_data?.industry || user.survey_responses?.industry || null
+        const employer = user.employer || user.survey_data?.employer || user.survey_responses?.employer || null
+        const visa_type = user.visa_type || user.survey_data?.visa_type || user.survey_responses?.visa_type || null
 
-        return {
+        const worker = {
           phone: user.phone_number,
           name: user.name || 'Unknown',
           country: user.country || 'Unknown',
@@ -45,9 +52,18 @@ export async function GET(request: Request) {
           updated_at: user.updated_at,
           registration_complete: user.registration_complete
         }
+
+        console.log(`Worker ${user.name}: postcode=${postcode}, state=${state}`)
+        return worker
       })
       // Filter out workers without valid postcode and state
-      .filter(worker => worker.postcode && worker.state)
+      .filter(worker => {
+        const valid = worker.postcode && worker.state
+        if (!valid) {
+          console.log(`Filtering out ${worker.name} - missing postcode or state`)
+        }
+        return valid
+      })
 
     console.log(`Returning ${workers.length} workers with postcodes for globe map`)
 
@@ -55,6 +71,6 @@ export async function GET(request: Request) {
     return NextResponse.json(workers)
   } catch (error) {
     console.error('Unexpected error fetching workers map data:', error)
-    return NextResponse.json([])
+    return NextResponse.json({ error: String(error), workers: [] })
   }
 }
