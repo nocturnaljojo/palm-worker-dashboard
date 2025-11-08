@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Map, { Marker, MapRef } from 'react-map-gl/mapbox'
-import { Users, Sparkles, User, Map as MapIcon } from 'lucide-react'
+import { Users, Sparkles, User, Globe } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { postcodeToCoordinates, addJitter } from '@/lib/postcodeToCoordinates'
 import WorkerSummaryCard from '@/components/WorkerSummaryCard'
@@ -38,7 +38,7 @@ interface GlobePoint {
   industry: string
 }
 
-export default function GlobeWorkersPage() {
+export default function FlatMapPage() {
   const router = useRouter()
   const [workers, setWorkers] = useState<Worker[]>([])
   const [globePoints, setGlobePoints] = useState<GlobePoint[]>([])
@@ -53,64 +53,6 @@ export default function GlobeWorkersPage() {
     const phone = localStorage.getItem('whatsapp_user_phone')
     setUserPhone(phone)
   }, [])
-
-  // Auto-rotate globe effect
-  useEffect(() => {
-    if (!mapRef.current) return
-
-    let userInteracting = false
-    let spinEnabled = true
-    let lastInteraction = Date.now()
-
-    const spinGlobe = () => {
-      if (!mapRef.current || userInteracting || !spinEnabled) return
-
-      const map = mapRef.current.getMap()
-      const center = map.getCenter()
-
-      // Rotate 0.2 degrees per frame (slow rotation)
-      map.easeTo({
-        center: [center.lng + 0.2, center.lat],
-        duration: 1000,
-        easing: (t: number) => t
-      })
-    }
-
-    // Set up rotation interval
-    const spinInterval = setInterval(spinGlobe, 1000)
-
-    // Pause rotation on user interaction
-    const handleInteractionStart = () => {
-      userInteracting = true
-      lastInteraction = Date.now()
-    }
-
-    const handleInteractionEnd = () => {
-      userInteracting = false
-      // Resume spinning after 2 seconds of no interaction
-      setTimeout(() => {
-        if (Date.now() - lastInteraction >= 2000) {
-          userInteracting = false
-        }
-      }, 2000)
-    }
-
-    const map = mapRef.current.getMap()
-    map.on('mousedown', handleInteractionStart)
-    map.on('touchstart', handleInteractionStart)
-    map.on('moveend', handleInteractionEnd)
-
-    return () => {
-      clearInterval(spinInterval)
-      if (mapRef.current) {
-        const map = mapRef.current.getMap()
-        map.off('mousedown', handleInteractionStart)
-        map.off('touchstart', handleInteractionStart)
-        map.off('moveend', handleInteractionEnd)
-      }
-    }
-  }, [loading])
-
 
   async function fetchWorkerData() {
     try {
@@ -198,7 +140,7 @@ export default function GlobeWorkersPage() {
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-300">Loading globe...</p>
+          <p className="mt-4 text-gray-300">Loading map...</p>
         </div>
       </div>
     )
@@ -213,17 +155,17 @@ export default function GlobeWorkersPage() {
             <div>
               <h1 className="text-xl font-bold text-white flex items-center gap-2">
                 <Sparkles className="w-6 h-6 text-yellow-400" />
-                PALM Workers - Spreading Light
+                PALM Workers - Flat Map View
               </h1>
               <p className="text-sm text-gray-400">Each dot represents a worker's voice and presence</p>
             </div>
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/flat-map')}
+                onClick={() => router.push('/globe-workers')}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
               >
-                <MapIcon className="w-4 h-4" />
-                <span>Switch to Flat Map</span>
+                <Globe className="w-4 h-4" />
+                <span>Switch to Globe</span>
               </button>
               {userPhone && (
                 <button
@@ -239,7 +181,7 @@ export default function GlobeWorkersPage() {
         </div>
       </header>
 
-      {/* Mapbox Globe Visualization - Full Width */}
+      {/* Flat Map Visualization - Full Width */}
       <div className="relative" style={{ height: 'calc(100vh - 80px)' }}>
         <Map
           ref={mapRef}
@@ -247,20 +189,12 @@ export default function GlobeWorkersPage() {
           initialViewState={{
             longitude: 133,
             latitude: -25,
-            zoom: 3.5,
+            zoom: 4,
             pitch: 0,
             bearing: 0
           }}
           style={{ width: '100%', height: '100%' }}
           mapStyle="mapbox://styles/mapbox/navigation-night-v1"
-          projection={{ name: 'globe' } as any}
-          fog={{
-            color: 'rgb(40, 45, 55)',
-            'high-color': 'rgb(20, 25, 35)',
-            'horizon-blend': 0.05,
-            'space-color': 'rgb(5, 8, 15)',
-            'star-intensity': 0.8
-          }}
         >
             {/* Worker markers with glowing effect */}
             {globePoints.map((point, index) => (
