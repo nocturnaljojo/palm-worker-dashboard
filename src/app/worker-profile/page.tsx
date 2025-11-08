@@ -9,10 +9,6 @@ import PerformanceChart from '@/components/dashboard/PerformanceChart'
 import SalesOverview from '@/components/dashboard/SalesOverview'
 import TaskTable from '@/components/dashboard/TaskTable'
 
-// Force dynamic rendering for this page
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 interface WorkerProfile {
   phone_number: string
   name: string
