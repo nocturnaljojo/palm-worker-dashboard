@@ -21,14 +21,10 @@ const POSTCODE_REGIONS: Record<string, Coordinates> = {
   '23': { lat: -33.7488, lng: 151.1873, city: 'Parramatta' },
   '24': { lat: -33.9173, lng: 151.2313, city: 'Kingsford' },
   '25': { lat: -33.7969, lng: 151.2849, city: 'Ryde' },
-  '26': { lat: -34.4278, lng: 150.8931, city: 'Wollongong' },
+  '26': { lat: -35.2809, lng: 149.1300, city: 'Canberra' }, // ACT postcodes
   '27': { lat: -31.9523, lng: 115.8613, city: 'Central Coast' },
   '28': { lat: -32.9267, lng: 151.7789, city: 'Newcastle' },
-  '29': { lat: -30.5237, lng: 151.6602, city: 'Armidale' },
-
-  // ACT - 2600-2619, 2900-2920
-  '26': { lat: -35.2809, lng: 149.1300, city: 'Canberra' },
-  '29': { lat: -35.2809, lng: 149.1300, city: 'Canberra' },
+  '29': { lat: -35.2809, lng: 149.1300, city: 'Canberra' }, // ACT postcodes
 
   // VIC - 3000-3999
   '30': { lat: -37.8136, lng: 144.9631, city: 'Melbourne CBD' },
