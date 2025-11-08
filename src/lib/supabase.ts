@@ -1,7 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Clean environment variables to remove any whitespace/newlines
+const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim().replace(/\s/g, '')
+const supabaseServiceKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim().replace(/\s/g, '')
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('Missing Supabase environment variables!')
+  console.error('URL exists:', !!supabaseUrl)
+  console.error('Service key exists:', !!supabaseServiceKey)
+}
 
 // Create Supabase client with service role for dashboard queries
 export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
