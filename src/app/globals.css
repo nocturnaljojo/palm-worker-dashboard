@@ -133,3 +133,17 @@ body {
 .mapboxgl-ctrl-attrib {
   display: none !important;
 }
+
+/* Scrolling text banner animation - continuous right to left */
+.animate-scroll {
+  animation: scroll-left 40s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

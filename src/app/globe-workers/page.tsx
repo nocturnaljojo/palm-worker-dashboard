@@ -282,8 +282,35 @@ export default function GlobeWorkersPage() {
         </div>
       </header>
 
+      {/* Scrolling Pacific Island Greetings Banner */}
+      <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900 overflow-hidden border-b border-purple-500/30">
+        <div className="animate-scroll whitespace-nowrap py-2 text-white/90 text-sm font-medium">
+          <span className="inline-block px-8">🇫🇯 Na nomu vosa e vaka na cina.</span>
+          <span className="inline-block px-8">🇰🇮 Aneneam akiia taian rauraro.</span>
+          <span className="inline-block px-8">🇳🇷 Añu itsio ebow ian itirin.</span>
+          <span className="inline-block px-8">🇵🇬 Toktok bilong yu i bringim lait.</span>
+          <span className="inline-block px-8">🇼🇸 O lou si'ufofoga e fa'apupulaina ai le malamalama.</span>
+          <span className="inline-block px-8">🇸🇧 Voes blong iu i bringim laet.</span>
+          <span className="inline-block px-8">🇹🇱 Ita-nia lian lori mean.</span>
+          <span className="inline-block px-8">🇹🇴 Hoʻo lea ʻoku ne fō mai ha mārama.</span>
+          <span className="inline-block px-8">🇹🇻 Tou leo e fa'alamalama atu.</span>
+          <span className="inline-block px-8">🇻🇺 Voes blong yu i bringim laet.</span>
+          {/* Duplicate for seamless loop */}
+          <span className="inline-block px-8">🇫🇯 Na nomu vosa e vaka na cina.</span>
+          <span className="inline-block px-8">🇰🇮 Aneneam akiia taian rauraro.</span>
+          <span className="inline-block px-8">🇳🇷 Añu itsio ebow ian itirin.</span>
+          <span className="inline-block px-8">🇵🇬 Toktok bilong yu i bringim lait.</span>
+          <span className="inline-block px-8">🇼🇸 O lou si'ufofoga e fa'apupulaina ai le malamalama.</span>
+          <span className="inline-block px-8">🇸🇧 Voes blong iu i bringim laet.</span>
+          <span className="inline-block px-8">🇹🇱 Ita-nia lian lori mean.</span>
+          <span className="inline-block px-8">🇹🇴 Hoʻo lea ʻoku ne fō mai ha mārama.</span>
+          <span className="inline-block px-8">🇹🇻 Tou leo e fa'alamalama atu.</span>
+          <span className="inline-block px-8">🇻🇺 Voes blong yu i bringim laet.</span>
+        </div>
+      </div>
+
       {/* Mapbox Globe Visualization - Full Width */}
-      <div className="relative" style={{ height: 'calc(100vh - 80px)' }}>
+      <div className="relative" style={{ height: 'calc(100vh - 120px)' }}>
         <Map
           ref={mapRef}
           mapboxAccessToken={MAPBOX_TOKEN}
