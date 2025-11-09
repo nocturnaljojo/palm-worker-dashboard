@@ -45,6 +45,7 @@ export default function GlobeWorkersPage() {
   const [loading, setLoading] = useState(true)
   const [selectedWorker, setSelectedWorker] = useState<GlobePoint | null>(null)
   const [userPhone, setUserPhone] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const mapRef = useRef<MapRef>(null)
 
   useEffect(() => {
@@ -410,67 +411,103 @@ export default function GlobeWorkersPage() {
             />
           </Map>
 
-          {/* Legend */}
-          <div className="absolute bottom-8 left-8 bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-lg">
-            <h3 className="text-sm font-semibold mb-3 text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-yellow-400" />
-              Legend - Each Light Represents a Worker
-            </h3>
-            <div className="space-y-2 text-xs">
+          {/* Legend - Bottom Stacked */}
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800/95 border border-gray-700 rounded-lg px-6 py-3 shadow-lg backdrop-blur-sm">
+            <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-green-500" style={{ boxShadow: '0 0 10px #10b981' }}></div>
-                <span className="text-gray-300">Fiji</span>
+                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <span className="text-xs font-semibold text-white">Legend:</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500" style={{ boxShadow: '0 0 10px #3b82f6' }}></div>
-                <span className="text-gray-300">Samoa</span>
+              <div className="grid grid-cols-5 gap-x-6 gap-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500" style={{ boxShadow: '0 0 10px #10b981' }}></div>
+                  <span className="text-xs text-gray-300">Fiji</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blue-500" style={{ boxShadow: '0 0 10px #3b82f6' }}></div>
+                  <span className="text-xs text-gray-300">Samoa</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-orange-500" style={{ boxShadow: '0 0 10px #f59e0b' }}></div>
+                  <span className="text-xs text-gray-300">Tonga</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-purple-500" style={{ boxShadow: '0 0 10px #8b5cf6' }}></div>
+                  <span className="text-xs text-gray-300">Vanuatu</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500" style={{ boxShadow: '0 0 10px #ef4444' }}></div>
+                  <span className="text-xs text-gray-300">Papua New Guinea</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-teal-500" style={{ boxShadow: '0 0 10px #14b8a6' }}></div>
+                  <span className="text-xs text-gray-300">Solomon Islands</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: '#f97316', boxShadow: '0 0 10px #f97316' }}></div>
+                  <span className="text-xs text-gray-300">Kiribati</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: '#06b6d4', boxShadow: '0 0 10px #06b6d4' }}></div>
+                  <span className="text-xs text-gray-300">Tuvalu</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: '#ec4899', boxShadow: '0 0 10px #ec4899' }}></div>
+                  <span className="text-xs text-gray-300">Timor-Leste</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: '#a855f7', boxShadow: '0 0 10px #a855f7' }}></div>
+                  <span className="text-xs text-gray-300">Nauru</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-orange-500" style={{ boxShadow: '0 0 10px #f59e0b' }}></div>
-                <span className="text-gray-300">Tonga</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-purple-500" style={{ boxShadow: '0 0 10px #8b5cf6' }}></div>
-                <span className="text-gray-300">Vanuatu</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-teal-500" style={{ boxShadow: '0 0 10px #14b8a6' }}></div>
-                <span className="text-gray-300">Solomon Islands</span>
-              </div>
-              <p className="pt-2 border-t border-gray-700 text-gray-400 italic">
-                Click any light to see worker details
-              </p>
             </div>
           </div>
 
-          {/* Stats Overlay */}
-          <div className="absolute top-8 right-8 bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-lg" style={{ minWidth: '220px' }}>
-            <h3 className="text-sm font-semibold mb-3 text-white flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Statistics
-            </h3>
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Lights Shining:</span>
-                <span className="font-semibold text-white text-lg">{globePoints.length}</span>
+          {/* Sliding Stats Sidebar */}
+          <div
+            className={`fixed top-0 right-0 h-full bg-gray-800 border-l border-gray-700 shadow-2xl transition-transform duration-300 ease-in-out z-50 ${
+              sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+            style={{ width: '320px', marginTop: '80px', height: 'calc(100vh - 80px)' }}
+          >
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-4 text-white flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Statistics
+              </h3>
+              <div className="space-y-4">
+                <div className="bg-gray-900/50 rounded-lg p-4">
+                  <span className="text-sm text-gray-400">Lights Shining</span>
+                  <p className="text-3xl font-bold text-white mt-1">{globePoints.length}</p>
+                </div>
+                <div className="bg-gray-900/50 rounded-lg p-4">
+                  <span className="text-sm text-gray-400">Countries</span>
+                  <p className="text-3xl font-bold text-white mt-1">{new Set(workers.map(w => w.country)).size}</p>
+                </div>
+                <div className="bg-gray-900/50 rounded-lg p-4">
+                  <span className="text-sm text-gray-400">Australian States</span>
+                  <p className="text-3xl font-bold text-white mt-1">{new Set(workers.map(w => w.state).filter(Boolean)).size}</p>
+                </div>
+                <div className="border-t border-gray-700 pt-4 mt-4">
+                  <p className="text-gray-400 italic text-sm">
+                    "Each light represents a voice, a story, and hope for those who cannot speak."
+                  </p>
+                </div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Countries:</span>
-                <span className="font-semibold text-white">
-                  {new Set(workers.map(w => w.country)).size}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Australian States:</span>
-                <span className="font-semibold text-white">
-                  {new Set(workers.map(w => w.state).filter(Boolean)).size}
-                </span>
-              </div>
-              <p className="pt-3 border-t border-gray-700 text-gray-400 italic text-[10px]">
-                "Each light represents a voice, a story, and hope for those who cannot speak."
-              </p>
             </div>
           </div>
+
+          {/* Sidebar Toggle Button */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onMouseEnter={() => setSidebarOpen(true)}
+            className={`fixed right-0 top-1/2 -translate-y-1/2 bg-gray-800 border border-gray-700 rounded-l-lg px-2 py-8 shadow-lg hover:bg-gray-700 transition-all z-40 ${
+              sidebarOpen ? 'opacity-0' : 'opacity-100'
+            }`}
+            style={{ marginTop: '40px' }}
+          >
+            <Users className="w-5 h-5 text-gray-300" />
+          </button>
         </div>
 
       {/* Worker Summary Card - Privacy-focused */}
