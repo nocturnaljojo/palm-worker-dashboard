@@ -55,6 +55,23 @@ export default function GlobeWorkersPage() {
     setUserPhone(phone)
   }, [])
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('stats-sidebar')
+      const toggleButton = document.getElementById('sidebar-toggle')
+
+      if (sidebarOpen && sidebar && toggleButton) {
+        if (!sidebar.contains(event.target as Node) && !toggleButton.contains(event.target as Node)) {
+          setSidebarOpen(false)
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [sidebarOpen])
+
   // Auto-focus on densest cluster after points are loaded
   useEffect(() => {
     if (globePoints.length > 0 && mapRef.current) {
@@ -465,6 +482,7 @@ export default function GlobeWorkersPage() {
 
           {/* Sliding Stats Sidebar */}
           <div
+            id="stats-sidebar"
             className={`fixed top-0 right-0 h-full bg-gray-800 border-l border-gray-700 shadow-2xl transition-transform duration-300 ease-in-out z-50 ${
               sidebarOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
@@ -499,6 +517,7 @@ export default function GlobeWorkersPage() {
 
           {/* Sidebar Toggle Button */}
           <button
+            id="sidebar-toggle"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             onMouseEnter={() => setSidebarOpen(true)}
             className={`fixed right-0 top-1/2 -translate-y-1/2 bg-gray-800 border border-gray-700 rounded-l-lg px-2 py-8 shadow-lg hover:bg-gray-700 transition-all z-40 ${
