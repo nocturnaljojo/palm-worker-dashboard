@@ -226,7 +226,7 @@ export default function FlatMapPage() {
 
       {/* Scrolling Pacific Island Greetings Banner */}
       <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900 overflow-hidden border-b border-purple-500/30">
-        <div className="animate-scroll whitespace-nowrap py-2 text-white/90 text-sm font-medium">
+        <div className="animate-scroll whitespace-nowrap py-2 text-white/90 text-base font-medium" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI Emoji", "Noto Color Emoji", sans-serif' }}>
           <span className="inline-block px-8">🇫🇯 Na nomu vosa e vaka na cina.</span>
           <span className="inline-block px-8">🇰🇮 Aneneam akiia taian rauraro.</span>
           <span className="inline-block px-8">🇳🇷 Añu itsio ebow ian itirin.</span>
