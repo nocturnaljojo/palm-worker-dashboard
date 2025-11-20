@@ -6,6 +6,7 @@ import { Users, Sparkles, User, Globe } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { postcodeToCoordinates, addJitter } from '@/lib/postcodeToCoordinates'
 import WorkerSummaryCard from '@/components/WorkerSummaryCard'
+import { useAuthCheck } from '@/hooks/useAuthCheck'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoiam9iYnk2OTciLCJhIjoiY21oZGJvbG50MDFkZzJqcHZyMm5mdTgzeCJ9.5ZmkgB0UpC-wgVy_f6b8HA'
@@ -44,15 +45,14 @@ export default function FlatMapPage() {
   const [globePoints, setGlobePoints] = useState<GlobePoint[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedWorker, setSelectedWorker] = useState<GlobePoint | null>(null)
-  const [userPhone, setUserPhone] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const mapRef = useRef<MapRef>(null)
+  
+  // Use authentication hook to check if user is registered in Supabase
+  const { isAuthenticated, userPhone, userName } = useAuthCheck()
 
   useEffect(() => {
     fetchWorkerData()
-    // Check if user has phone number in localStorage (for WhatsApp users)
-    const phone = localStorage.getItem('whatsapp_user_phone')
-    setUserPhone(phone)
   }, [])
 
   // Close sidebar when clicking outside
@@ -210,15 +210,19 @@ export default function FlatMapPage() {
                 <Globe className="w-4 h-4" />
                 <span>Switch to Globe</span>
               </button>
-              {userPhone && (
-                <button
-                  onClick={() => router.push(`/worker-profile?phone=${userPhone}`)}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  <User className="w-4 h-4" />
-                  <span>My Profile</span>
-                </button>
-              )}
+              {/* TESTING MODE - Button always visible */}
+              <button
+                onClick={() => {
+                  // Set test user for preview
+                  localStorage.setItem('whatsapp_user_phone', '+61412345678')
+                  router.push('/profile-enhanced')
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors shadow-lg shadow-emerald-600/20"
+                title="Click to preview enhanced dashboard"
+              >
+                <User className="w-4 h-4" />
+                <span>My Dashboard ✨</span>
+              </button>
             </div>
           </div>
         </div>
