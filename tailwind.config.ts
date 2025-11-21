@@ -9,12 +9,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        palm: {
-          blue: "#0066CC",
-          green: "#00A86B",
-          orange: "#FF6B35",
-          red: "#DC143C",
-        },
+        // PRIMARY PALETTE (Pacific-inspired)
+        'primary-blue': 'var(--primary-blue)',
+        'secondary-teal': 'var(--secondary-teal)',
+        'accent-coral': 'var(--accent-coral)',
+        'neutral-sand': 'var(--neutral-sand)',
+        'text-dark': 'var(--text-dark)',
+        'text-muted': 'var(--text-muted)',
+
+        // SEMANTIC COLORS
+        'success': 'var(--success)',
+        'warning': 'var(--warning)',
+        'error': 'var(--error)',
+        'info': 'var(--info)',
+      },
+      fontFamily: {
+        heading: ['var(--font-heading)', 'sans-serif'],
+        body: ['var(--font-body)', 'sans-serif'],
+      },
+      spacing: {
+        'xs': 'var(--space-xs)',
+        'sm': 'var(--space-sm)',
+        'md': 'var(--space-md)',
+        'lg': 'var(--space-lg)',
+        'xl': 'var(--space-xl)',
       },
     },
   },

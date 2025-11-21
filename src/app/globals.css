@@ -6,6 +6,31 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  /* PRIMARY PALETTE (Pacific-inspired) */
+  --primary-blue: #006BA6;
+  --secondary-teal: #00B4D8;
+  --accent-coral: #FF6B6B;
+  --neutral-sand: #F8F9FA;
+  --text-dark: #1F2937;
+  --text-muted: #6B7280;
+
+  /* SEMANTIC COLORS */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* TYPOGRAPHY */
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+
+  /* SPACING (8px grid) */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 48px;
+  --space-xl: 64px;
 }
 
 @media (prefers-color-scheme: dark) {
