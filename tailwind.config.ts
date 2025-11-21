@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,7 +10,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // PRIMARY PALETTE (Pacific-inspired)
+        // LUXURY PACIFIC PALETTE
+        'ocean': '#0F52BA',
+        'teal': '#008080',
+        'gold': '#D4AF37',
+        'coral': '#FF6B6B',
+        'sand': '#F9FAFB',
+        'midnight': '#0B0F19',
+        'charcoal': '#151B2B',
+
+        // LEGACY (keep for compatibility)
         'primary-blue': 'var(--primary-blue)',
         'secondary-teal': 'var(--secondary-teal)',
         'accent-coral': 'var(--accent-coral)',
@@ -24,8 +34,8 @@ const config: Config = {
         'info': 'var(--info)',
       },
       fontFamily: {
-        heading: ['var(--font-heading)', 'sans-serif'],
-        body: ['var(--font-body)', 'sans-serif'],
+        heading: ['Playfair Display', 'serif'],
+        body: ['Inter', 'sans-serif'],
       },
       spacing: {
         'xs': 'var(--space-xs)',
@@ -33,6 +43,10 @@ const config: Config = {
         'md': 'var(--space-md)',
         'lg': 'var(--space-lg)',
         'xl': 'var(--space-xl)',
+      },
+      backgroundImage: {
+        'luxury-gradient': 'linear-gradient(135deg, #0F52BA 0%, #0B0F19 100%)',
+        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #AA8A2E 100%)',
       },
     },
   },

@@ -2,153 +2,216 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Import Image component
+import { Navbar } from '@/components/ui/Navbar';
+import { Footer } from '@/components/ui/Footer';
 import { StatCard } from '@/components/ui/StatCard';
-import { Globe, Users, BarChart, Newspaper, ArrowRight, Menu, X } from 'lucide-react'; // Placeholder icons
-
-// Placeholder components - these will be implemented fully later
-const NavigationBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  return (
-    <nav className="bg-primary-blue text-white p-md shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="font-heading text-xl font-bold">
-          PALM
-        </Link>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-lg">
-          <Link href="/" className="hover:text-secondary-teal">Home</Link>
-          <Link href="/for-workers" className="hover:text-secondary-teal">For Workers</Link>
-          <Link href="/data" className="hover:text-secondary-teal">Data</Link>
-          <button className="bg-secondary-teal text-white py-sm px-md rounded-md hover:bg-accent-coral">Login/Sign Up</button>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white focus:outline-none">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-primary-blue pb-sm mt-sm">
-          <div className="flex flex-col items-center space-y-sm">
-            <Link href="/" className="block py-xs hover:text-secondary-teal" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link href="/for-workers" className="block py-xs hover:text-secondary-teal" onClick={() => setIsMenuOpen(false)}>For Workers</Link>
-            <Link href="/data" className="block py-xs hover:text-secondary-teal" onClick={() => setIsMenuOpen(false)}>Data</Link>
-            <button className="bg-secondary-teal text-white py-sm px-md rounded-md hover:bg-accent-coral w-max" onClick={() => setIsMenuOpen(false)}>Login/Sign Up</button>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-};
-
-const Footer = () => (
-  <footer className="bg-text-dark text-white p-lg mt-xl">
-    <div className="container mx-auto text-center text-text-muted">
-      <p>&copy; {new Date().getFullYear()} PALM. All rights reserved.</p>
-      <div className="flex justify-center space-x-lg mt-sm">
-        <Link href="/about" className="hover:text-secondary-teal">About</Link>
-        <Link href="/resources" className="hover:text-secondary-teal">Resources</Link>
-        <Link href="/contact" className="hover:text-secondary-teal">Contact</Link>
-        <Link href="/privacy" className="hover:text-secondary-teal">Privacy</Link>
-      </div>
-    </div>
-  </footer>
-);
-
-const NewsCard = ({ title, date, source, imageUrl, link }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-    {imageUrl && <Image src={imageUrl} alt={title} width={400} height={200} className="w-full h-40 object-cover" />}
-    <div className="p-md">
-      <h4 className="font-heading text-lg font-semibold text-text-dark mb-xs">{title}</h4>
-      <p className="text-text-muted text-sm mb-sm">{date} | {source}</p>
-      <Link href={link} className="text-primary-blue hover:text-secondary-teal flex items-center">
-        Read More <ArrowRight size={16} className="ml-xs" />
-      </Link>
-    </div>
-  </div>
-);
-
-const InteractiveMap = () => (
-  <div className="bg-white rounded-lg shadow-md p-md h-96 flex items-center justify-center text-text-muted font-body">
-    {/* Placeholder for actual interactive map component */}
-    <Globe size={48} className="text-secondary-teal mr-sm" />
-    <p>Interactive Map Placeholder</p>
-  </div>
-);
+import { NewsCard } from '@/components/ui/NewsCard';
+import { Button } from '@/components/ui/Button';
+import { Users, MapPin, Star, MessageCircle, ArrowRight, Globe } from 'lucide-react';
 
 export default function HomePage() {
-  return (
-    <div className="min-h-screen bg-neutral-sand flex flex-col">
-      <NavigationBar />
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-      <main className="flex-grow container mx-auto p-lg">
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  // Mock news data
+  const mockNews = [
+    {
+      id: '1',
+      title: 'Fair Work Announces New Wage Increases',
+      summary: 'The Fair Work Ombudsman has released new guidelines for minimum wage adjustments affecting PALM scheme workers.',
+      source: 'Fair Work Ombudsman',
+      publishedDate: '2 hours ago',
+      imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+      url: '/news/wage-increases',
+    },
+    {
+      id: '2',
+      title: 'Community Event: Pacific Festival in Brisbane',
+      summary: 'Join over 500 workers this weekend for cultural celebrations and community support networking.',
+      source: 'PALM Community',
+      publishedDate: '1 day ago',
+      imageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop',
+      url: '/news/pacific-festival',
+    },
+    {
+      id: '3',
+      title: 'New Visa Regulations Explained',
+      summary: 'A simplified breakdown of the recent changes to visa conditions for long-term placements.',
+      source: 'Department of Home Affairs',
+      publishedDate: '3 days ago',
+      imageUrl: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop',
+      url: '/news/visa-regulations',
+    },
+  ];
+
+  return (
+    <div className={`min-h-screen flex flex-col transition-colors duration-200 ${isDarkMode ? 'dark' : ''}`}>
+      <Navbar currentPath="/" isDarkMode={isDarkMode} onToggleTheme={toggleTheme} />
+
+      <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-primary-blue text-white rounded-lg p-xl text-center shadow-lg mb-xl">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-md">
-            Supporting 30,000+ Pacific Workers in Australia 🇦🇺🇫🇯🇼🇸🇹🇴
-          </h1>
-          <p className="font-body text-lg mb-lg max-w-2xl mx-auto">
-            Empowering PALM scheme workers with AI assistance, critical information, and a platform to voice their feedback.
-          </p>
-          <div className="flex justify-center space-x-md">
-            <Link href="/assistant" className="bg-secondary-teal text-white py-md px-lg rounded-md font-body text-lg hover:bg-accent-coral transition-colors duration-300">
-              Try the Assistant
-            </Link>
-            <Link href="/about" className="bg-transparent border border-white text-white py-md px-lg rounded-md font-body text-lg hover:bg-white hover:text-primary-blue transition-colors duration-300">
-              Learn More
-            </Link>
+        <section className="relative min-h-[90vh] flex items-center justify-center bg-midnight text-white overflow-hidden">
+          {/* Background Effects */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-midnight via-midnight/90 to-midnight z-10"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=2600&h=1600&fit=crop')] bg-cover bg-center opacity-30"></div>
+          </div>
+
+          {/* Decorative Glows */}
+          <div className="absolute top-20 right-20 w-96 h-96 bg-ocean/30 rounded-full blur-[128px] z-0"></div>
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-[128px] z-0"></div>
+
+          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="animate-fade-in-up space-y-8">
+              {/* Version Badge */}
+              <div className="inline-flex items-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 px-4 py-1.5 text-sm font-medium text-gold mb-4">
+                <span className="flex h-2 w-2 rounded-full bg-gold mr-2 animate-pulse"></span>
+                Version 3.0 Live
+              </div>
+
+              {/* Main Heading */}
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight leading-tight text-white">
+                Elevating the <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-yellow-200 to-gold">
+                  Pacific Standard
+                </span>
+              </h1>
+
+              {/* Subheading */}
+              <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+                The premier digital hub for the PALM scheme. Connecting 30,000+ workers with AI-driven support,
+                community resources, and real-time insights.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-5 justify-center pt-8">
+                <Button variant="luxury" size="lg" icon={<MessageCircle className="w-5 h-5" />}>
+                  Launch Assistant
+                </Button>
+                <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10">
+                  Explore Platform
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div className="w-px h-16 bg-gradient-to-b from-gold to-transparent"></div>
           </div>
         </section>
 
-        {/* Key Metrics */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
-          <StatCard title="Workers Supported" value="30,000+" icon={<Users size={24} />} />
-          <StatCard title="Countries Represented" value="10" icon={<Globe size={24} />} />
-          <StatCard title="Average Rating" value="4.8/5" icon={<BarChart size={24} />} trend={{ value: 0.5, direction: 'up', percentage: 10 }} />
-        </section>
+        {/* Metrics Strip */}
+        <div className="border-y border-slate-100 dark:border-white/5 bg-white dark:bg-charcoal/50 backdrop-blur-sm relative z-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-100 dark:divide-white/5">
+              <div>
+                <p className="text-4xl font-heading font-bold text-ocean dark:text-white">30k+</p>
+                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-gold mt-2">Active Workers</p>
+              </div>
+              <div>
+                <p className="text-4xl font-heading font-bold text-ocean dark:text-white">15</p>
+                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-gold mt-2">Pacific Nations</p>
+              </div>
+              <div>
+                <p className="text-4xl font-heading font-bold text-ocean dark:text-white">24/7</p>
+                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-gold mt-2">AI Support</p>
+              </div>
+              <div>
+                <p className="text-4xl font-heading font-bold text-ocean dark:text-white">4.8</p>
+                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-gold mt-2">Satisfaction</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {/* Interactive Map */}
-        <section className="mb-xl">
-          <h2 className="font-heading text-3xl font-bold text-text-dark mb-lg text-center">
-            Where Our Workers Are Located
-          </h2>
-          <InteractiveMap />
+        {/* Live Dashboard Preview */}
+        <section className="py-24 bg-sand dark:bg-midnight transition-colors duration-300 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] dark:opacity-[0.05]"></div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+              <div className="max-w-2xl">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-slate-900 dark:text-white mb-4">
+                  Real-Time Intelligence
+                </h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 font-light">
+                  Live telemetry from across the continent. Track distribution, welfare, and engagement instantly.
+                </p>
+              </div>
+              <Link href="/statistics">
+                <Button variant="outline" className="mt-6 md:mt-0 dark:border-gold/30 dark:text-gold hover:dark:bg-gold/10">
+                  View Full Analytics
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <StatCard
+                title="Workers Supported"
+                value="30,248"
+                icon={<Users size={24} />}
+                trend={{ value: 12, direction: 'up' }}
+                variant="highlight"
+              />
+              <StatCard
+                title="Countries Active"
+                value="15"
+                icon={<Globe size={24} />}
+              />
+              <StatCard
+                title="Average Rating"
+                value="4.8/5"
+                icon={<Star size={24} />}
+                trend={{ value: 0.3, direction: 'up' }}
+              />
+            </div>
+
+            {/* Interactive Map Placeholder */}
+            <div className="bg-white dark:bg-charcoal rounded-2xl shadow-lg p-8 border border-slate-100 dark:border-white/5">
+              <div className="flex items-center justify-center h-96 text-slate-400 dark:text-slate-500">
+                <div className="text-center">
+                  <MapPin size={48} className="mx-auto mb-4 text-ocean dark:text-gold" />
+                  <p className="text-lg font-medium">Interactive Map Component</p>
+                  <p className="text-sm">Coming soon: Live worker distribution across Australia</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Latest News */}
-        <section className="mb-xl">
-          <h2 className="font-heading text-3xl font-bold text-text-dark mb-lg text-center">
-            Latest News & Updates
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-            <NewsCard
-              title="Fair Work Announces New Wage Increases"
-              date="2 hours ago"
-              source="Fair Work Ombudsman"
-              imageUrl="https://via.placeholder.com/400x200?text=News+Image+1"
-              link="/news/article1"
-            />
-            <NewsCard
-              title="New PALM Scheme Initiatives Launched"
-              date="1 day ago"
-              source="PALM Program Office"
-              imageUrl="https://via.placeholder.com/400x200?text=News+Image+2"
-              link="/news/article2"
-            />
-            <NewsCard
-              title="Worker Rights Workshop in Brisbane"
-              date="3 days ago"
-              source="Migrant Workers Centre"
-              imageUrl="https://via.placeholder.com/400x200?text=News+Image+3"
-              link="/news/article3"
-            />
+        <section className="py-24 bg-white dark:bg-charcoal transition-colors duration-300">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-slate-900 dark:text-white mb-4">
+                Latest News & Updates
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400">
+                Stay informed with the latest developments affecting Pacific workers
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {mockNews.map((article) => (
+                <NewsCard key={article.id} {...article} />
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/news">
+                <Button variant="outline">
+                  View All News
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
