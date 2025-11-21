@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { User, Briefcase, Calendar, Phone, MapPin } from 'lucide-react'; // Placeholder icons for profile
-import { StatCard } from '@/components/ui/StatCard'; // Re-using our new StatCard
+import { User, Briefcase, Calendar, Phone, ArrowLeft } from 'lucide-react';
+import { StatCard } from '@/components/ui/StatCard';
+import { Navbar } from '@/components/ui/Navbar';
+import { Footer } from '@/components/ui/Footer';
 
 interface WorkerProfile {
   phone_number: string;
@@ -17,29 +19,11 @@ interface WorkerProfile {
   visa_type: string;
   created_at: string;
   registration_complete: boolean;
-  // Add other fields from database schema as needed
-  chats_count?: number; // Placeholder for chat count
-  hours_worked?: number; // Placeholder for hours worked
-  rating?: string; // Placeholder for rating
-  status?: string; // Placeholder for status
+  chats_count?: number;
+  hours_worked?: number;
+  rating?: string;
+  status?: string;
 }
-
-// Placeholder for NavigationBar, as it will likely be a separate component outside page.tsx later
-const NavigationBar = () => (
-  <nav className="bg-primary-blue text-white p-md shadow-lg">
-    <div className="container mx-auto flex justify-between items-center">
-      <Link href="/" className="font-heading text-xl font-bold">
-        PALM
-      </Link>
-      <div className="flex space-x-lg">
-        <Link href="/" className="hover:text-secondary-teal">Home</Link>
-        <Link href="/for-workers" className="hover:text-secondary-teal">For Workers</Link>
-        <Link href="/data" className="hover:text-secondary-teal">Data</Link>
-      </div>
-      <button className="bg-secondary-teal text-white py-sm px-md rounded-md hover:bg-accent-coral">Login/Sign Up</button>
-    </div>
-  </nav>
-);
 
 function WorkerProfileContent() {
   const router = useRouter();
@@ -126,17 +110,17 @@ function WorkerProfileContent() {
   const memberSince = worker.created_at ? new Date(worker.created_at).toLocaleDateString('en-AU', { year: 'numeric', month: 'short' }) : 'N/A';
 
   return (
-    <div className="min-h-screen bg-neutral-sand flex flex-col">
-      <NavigationBar /> {/* Using placeholder NavigationBar */}
+    <div className="min-h-screen bg-sand dark:bg-midnight flex flex-col">
+      <Navbar currentPath="/worker" />
 
       <main className="flex-grow container mx-auto p-lg">
         {/* Back to Home Button */}
         <div className="mb-lg">
           <button
-            onClick={() => router.push('/')} // Return to new homepage
-            className="inline-flex items-center gap-xs text-text-muted hover:text-primary-blue transition-colors"
+            onClick={() => router.push('/')}
+            className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-ocean dark:hover:text-gold transition-colors"
           >
-            <ArrowRight size={16} className="rotate-180" /> Back to Home
+            <ArrowLeft size={16} /> Back to Home
           </button>
         </div>
 
@@ -175,6 +159,7 @@ function WorkerProfileContent() {
           <button className="bg-text-muted text-white py-md px-lg rounded-md hover:bg-text-dark transition-colors">Get Support</button>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
