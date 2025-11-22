@@ -16,6 +16,22 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
+  webpack: (config, { isServer }) => {
+    // Handle canvas for node environment
+    if (isServer) {
+      config.externals = [...(config.externals || []), { canvas: 'canvas' }];
+    }
+
+    // Shader file handling
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      exclude: /node_modules/,
+      use: ['raw-loader', 'glslify-loader'],
+    });
+
+    return config;
+  },
 }
 
 export default nextConfig
