@@ -2,11 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/ui/Navbar';
 import { Footer } from '@/components/ui/Footer';
 import { Button } from '@/components/ui/Button';
-import { Orb } from '@/components/ui/orb';
 import { Mic, MicOff, Volume2, VolumeX, ArrowLeft, Sparkles } from 'lucide-react';
+
+// Dynamically import Orb with no SSR
+const Orb = dynamic(() => import('@/components/ui/orb').then((mod) => mod.Orb), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gold"></div>
+    </div>
+  ),
+});
 
 type AgentState = null | 'thinking' | 'listening' | 'talking';
 
