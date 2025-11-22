@@ -173,14 +173,78 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Interactive Map Placeholder */}
-            <div className="bg-white dark:bg-charcoal rounded-2xl shadow-lg p-8 border border-slate-100 dark:border-white/5">
-              <div className="flex items-center justify-center h-96 text-slate-400 dark:text-slate-500">
-                <div className="text-center">
-                  <MapPin size={48} className="mx-auto mb-4 text-ocean dark:text-gold" />
-                  <p className="text-lg font-medium">Interactive Map Component</p>
-                  <p className="text-sm">Coming soon: Live worker distribution across Australia</p>
+            {/* Interactive Map - Clickable Preview */}
+            <div className="bg-white dark:bg-charcoal rounded-2xl shadow-lg border border-slate-100 dark:border-white/5 overflow-hidden group">
+              <div className="relative h-96">
+                {/* Background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-midnight via-ocean to-midnight opacity-90"></div>
+
+                {/* Animated dots simulating map points */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {[...Array(20)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full bg-gold animate-pulse"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${i * 0.2}s`,
+                        boxShadow: '0 0 10px currentColor'
+                      }}
+                    />
+                  ))}
                 </div>
+
+                {/* Content overlay */}
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-white p-8">
+                  <MapPin size={56} className="mb-4 text-gold animate-bounce" />
+                  <h3 className="text-2xl font-heading font-bold mb-2">Live Worker Distribution</h3>
+                  <p className="text-slate-300 mb-6 text-center max-w-md">
+                    Explore interactive maps showing real-time locations of 30,000+ PALM workers across Australia
+                  </p>
+
+                  {/* Map view buttons */}
+                  <div className="flex gap-4">
+                    <Link href="/globe-workers">
+                      <Button
+                        variant="luxury"
+                        size="lg"
+                        icon={<Globe className="w-5 h-5" />}
+                      >
+                        3D Globe View
+                      </Button>
+                    </Link>
+                    <Link href="/flat-map">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="border-white/30 text-white hover:bg-white/10"
+                        icon={<MapPin className="w-5 h-5" />}
+                      >
+                        Flat Map View
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {/* Feature badges */}
+                  <div className="mt-6 flex gap-4 text-xs text-slate-300">
+                    <span className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-gold" />
+                      Auto-rotating globe
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-gold" />
+                      Interactive markers
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-gold" />
+                      Real-time data
+                    </span>
+                  </div>
+                </div>
+
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-ocean/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             </div>
           </div>
